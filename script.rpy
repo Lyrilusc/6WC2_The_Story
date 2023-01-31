@@ -1,9 +1,37 @@
+#this is the way you can bring the teams scores
+init python:
+    class Team:
+        def __init__ (self, score_nm1, score_nm2, score_nm3, score_nm4, score_nm5, score_nm6, score_hd1, score_hd2, score_hd3, score_hr1, score_hr2, score_hr3, score_dt1, score_dt2, score_dt3, score_dt4, score_fm1, score_fm2, score_fm3, score_tb):
+            self.score_nm1 = score_nm1
+            self.score_nm2 = score_nm2
+            self.score_nm3 = score_nm3
+            self.score_nm4 = score_nm4
+            self.score_nm5 = score_nm5
+            self.score_nm6 = score_nm6
+            self.score_hd1 = score_hd1
+            self.score_hd2 = score_hd2
+            self.score_hd3 = score_hd3
+            self.score_hr1 = score_hr1
+            self.score_hr2 = score_hr2
+            self.score_hr3 = score_hr3
+            self.score_dt1 = score_dt1
+            self.score_dt2 = score_dt2
+            self.score_dt3 = score_dt3
+            self.score_dt4 = score_dt4
+            self.score_fm1 = score_fm1
+            self.score_fm2 = score_fm2
+            self.score_fm3 = score_fm3
+            self.score_tb = score_tb
+    
+    class Map:
+        def __init__ (self, name):
+            self.name = name
+            self.picked = False
+            self.banned = False
+$maps [Map("NM1"), Map("NM2")]        
 
-from scipy import *
 
-# The script of the game goes in this file.
-
-# Declare characters used by this game. The color argument colorizes the
+# Declare characters used by this game. The color argument colorizes the 
 # name of the character.
 
 define Manten = Character("Manten", color="#add8e6")
@@ -13,7 +41,7 @@ define Hawk = Character("NyghtHawk", color="#a9a9a9")
 define Taevas = Character("Taevas", color="#972768")
 define Nelou = Character("Nelou", color="#154863")
 define Terli = Character("TerliManor", color="#df3096")
-define KIHCA = Character("KIHCA", color="#352107" )
+define KIHCA = Character("KIHCA", color="#814e0b" )
 define Nagi = Character("MomoNagi", color="#9b194f")
 define smun = Character("smun", color="#bd1a1a")
 define Ayziar = Character("Ayziar", color="#323531")
@@ -25,13 +53,18 @@ define Nerowo = Character("Nerowo", color="#896543")
 
 default nelou_team = 0 
 default terli_call_day2 = 0
-default entente = 0.75
+default entente = 0.80
 
 #These are our special transitions
 define fadehold = Fade(0.5, 1.0, 0.5)
+
+#album variables
+image France_tryouts = "Cards/fr.png"
+
 # The game starts here.
 
 label start:
+        
     "During a sunny day..."
     scene bg gym
     with fade
@@ -179,6 +212,7 @@ label start:
     stop music fadeout 1.0
     show terli black
     with dissolve
+    play music "audio/Terli_Theme.mp3" fadein 1.0
 
     Terli "{color=#00ff00}Hi Manten ! How is my son doing so far ?"
     Manten "{i}TerliManor is a german player. He played during 6WC1, and we played many tournaments together. He also is my mommy !{/i}"
@@ -201,7 +235,7 @@ label start:
     hide terli black
     show bg black
     with fade
-    
+    stop music fadeout 1.0
 label day_2:
     "The next day..."
 
@@ -285,14 +319,16 @@ label day_2:
     
 label Nelou_IT_Ending:
     
-    
-    
+
+    $ team1 = Team(1200000, 1400000, 900000, 650000, 1000000, 400000, 1100000, 400000, 800000, 2000000, 1500000, 1900000, 1500000, 2000000, 1200000, 1100000, 1900000, 900000, 800000, 1200000)
+    $ team2 = Team(1000000, 1000000, 1400000, 1900000, 1000000, 650000, 1200000, 700000, 1200000, 800000, 800000, 800000, 1400000, 1700000, 1900000, 1800000, 1700000, 1000000, 1000000, 1400000)
     hide lardon normal
     with dissolve
-    Nelou "I knew you were gonna chose me, I'm the best after all"
+    Nelou "I knew you were gonna choose me, I'm the best after all"
     Manten "We'll see about that when you will play against Taevas again."
     Nagi "Let's do this guys !"
-
+    
+    
     hide nagi normal
     hide nelou normal
     with dissolve
@@ -306,129 +342,147 @@ label Nelou_IT_Ending:
     Nelou "Yeah, I'd not be surprised if they-"
     lardon "{color=#00ff00}We ban HR1 !!{/color}"
     Nelou "Banned an HR."
-    Manten "Alright, noted lardon ! On our side, we will ban HD2 !"
-    Nagi "Sounds good."
+    Manten "And here, we'll ban..."
+    hide nelou normal
+    hide nagi normal
+    with dissolve
     
-    show nelou normal
-    with hpunch
+    call screen THE_BAN
 
-    Nelou "NOOOOO IT WAS A BANGER !!"
-    Manten "But we are against both lardon and Taevas. We never win this point, there is not a single dimension where this is possible."
-    Nelou "Okay..."
-    Manten "How about we take the first pick ? And insta pick HR2 ?"
-    Nagi "I suck at HR but if you guys can carry this..."
-    Manten "No worries, we should be fine, no one plays precision anyway."
+    call screen THE_PICK
+    
 
-    hide nelou normal 
-    hide nagi normal 
-    with dissolve
-    show bg osu
-    with fadehold 
-    show nelou normal at left
-    show nagi normal at right
-    with dissolve
+    
 
-    "Results of HR1 : "
-    "Team Lardon : 1,236,568 - 1,983,320 : Team Manten"
-    "Team Lardon : 0 - 1 : Team Manten"
 
-    Nelou "WTF, smun got a big combo !"
-    smun "{color=#00ff00}I main precision... But you guys just acc gamed me.{/color}"
-    Manten "Well, I used to main precision maps too so... I guess we will be rivals during the entire tryouts time !"
-    lardon "{color=#00ff00}Well played guys ! We pick HD1 !{/color}"
-    Manten "Oh well, not my best map but i should be decent."
-    Nelou "Care, Taevas obliterated me yesterday on HDs."
-    Nagi "And I'm bad so we are probably gonna lose this point."
-    Manten "Let's just give it a shot, we never know what will happen. Good luck !"
 
-    hide nelou normal 
-    hide nagi normal 
-    with dissolve
-    show bg osu
-    with fadehold 
-    show nelou normal at left
-    show nagi normal at right
-    with dissolve
+    # Manten "Alright, noted lardon ! On our side, we will ban HD2 !"
+    # Nagi "Sounds good."
+    
+    # show nelou normal
+    # with hpunch
 
-    "Results of HD1 :"
-    "Team Lardon : 1,596,563 - 1,532,960"
-    "Team Lardon : 1 - 1 : Team Manten"
+    # Nelou "NOOOOO IT WAS A BANGER !!"
+    # Manten "But we are against both lardon and Taevas. We never win this point, there is not a single dimension where this is possible."
+    # Nelou "Okay..."
+    # Manten "How about we take the first pick ? And insta pick HR2 ?"
+    # Nagi "I suck at HR but if you guys can carry this..."
+    # Manten "No worries, we should be fine, no one plays precision anyway."
 
-    Nelou "Ah man, that was so close !!"
-    Manten "Indeed... We got unlucky there."
-    lardon "{color=#00ff00}Wow, I never thought it would be THAT close. Good job guys.{/color}"
-    Manten "Maybe we can pick some DT ?"
-    Nagi "I can play DT2 in general, not much more though."
-    Manten "Alright, DT2 it is !"
-    lardon "{color=#00ff00}Good luck !{/color}"
+    # hide nelou normal 
+    # hide nagi normal 
+    # with dissolve
+    # show bg osu
+    # with fadehold 
+    # show nelou normal at left
+    # show nagi normal at right
+    # with dissolve
 
-    hide nelou normal 
-    hide nagi normal 
-    with dissolve
-    show bg osu
-    with fadehold 
-    show nelou normal at left
-    show nagi normal at right
-    with dissolve
+    # "Results of HR1 : "
+    # "Team Lardon : 1,236,568 - 1,983,320 : Team Manten"
+    # "Team Lardon : 0 - 1 : Team Manten"
 
-    "Results of DT2 :"
-    "Team Lardon : 2,012,635 - 1,863,569 : Team Manten"
-    "Team Lardon : 2 - 1 : Team Manten"
+    # Nelou "WTF, smun got a big combo !"
+    # smun "{color=#00ff00}I main precision... But you guys just acc gamed me.{/color}"
+    # Manten "Well, I used to main precision maps too so... I guess we will be rivals during the entire tryouts time !"
+    # lardon "{color=#00ff00}Well played guys ! We pick HD1 !{/color}"
+    # Manten "Oh well, not my best map but i should be decent."
+    # Nelou "Care, Taevas obliterated me yesterday on HDs."
+    # Nagi "And I'm bad so we are probably gonna lose this point."
+    # Manten "Let's just give it a shot, we never know what will happen. Good luck !"
 
-    Manten "Well, I think we just got Taevas'ed. Nice FC !"
-    Taevas "{color=#00ff00}Thanks ! You guys played very well too {/color}"
-    Nelou "No way, I lost to Tae once again ! I'm such a golem bro..."
-    lardon "{color=#00ff00}Losing to Tae is not a bad thing you know, he's cracked.{/color}"
-    Manten "I guess it's time for lardon's Team to pick now !"
-    lardon "{color=#00ff00}Yes, we'll pick DT1 !{/color}"
-    Nagi "Good luck and have fun !"
+    # hide nelou normal 
+    # hide nagi normal 
+    # with dissolve
+    # show bg osu
+    # with fadehold 
+    # show nelou normal at left
+    # show nagi normal at right
+    # with dissolve
 
-    hide nelou normal 
-    hide nagi normal 
-    with dissolve
-    show bg osu
-    with fadehold 
-    show nelou normal at left
-    show nagi normal at right
-    with dissolve
+    # "Results of HD1 :"
+    # "Team Lardon : 1,596,563 - 1,532,960"
+    # "Team Lardon : 1 - 1 : Team Manten"
 
-    "Results of DT1 :"
-    "Team Lardon : 2,153,568 - 1,786,436"
-    "Team Lardon : 3 - 1 : Team Manten"
+    # Nelou "Ah man, that was so close !!"
+    # Manten "Indeed... We got unlucky there."
+    # lardon "{color=#00ff00}Wow, I never thought it would be THAT close. Good job guys.{/color}"
+    # Manten "Maybe we can pick some DT ?"
+    # Nagi "I can play DT2 in general, not much more though."
+    # Manten "Alright, DT2 it is !"
+    # lardon "{color=#00ff00}Good luck !{/color}"
 
-    Nelou "What the hell, Taevas is always winning... he's just a crackhead"
-    Manten "Indeed he is. We have to pick now."
-    Nagi "Maybe we should try a NM1 ? The skillcap might work since we have Nel"
-    Manten "Hmmm... Good idea, let's try this. "
-    lardon "{color=#00ff00}Alright ! Good luck !{/color}"
+    # hide nelou normal 
+    # hide nagi normal 
+    # with dissolve
+    # show bg osu
+    # with fadehold 
+    # show nelou normal at left
+    # show nagi normal at right
+    # with dissolve
 
-    hide nelou normal 
-    hide nagi normal 
-    with dissolve
-    show bg osu
-    with fadehold 
-    show nelou normal at left
-    show nagi normal at right
-    with dissolve
+    # "Results of DT2 :"
+    # "Team Lardon : 2,012,635 - 1,863,569 : Team Manten"
+    # "Team Lardon : 2 - 1 : Team Manten"
 
-    "Results of NM1 : "
-    "Team Lardon : 2,596,361 - 2,131,727 : Team Manten"
-    "Team Lardon : 4 - 1 : Team Manten"
-    "--- END OF THE MATCH ---"
+    # Manten "Well, I think we just got Taevas'ed. Nice FC !"
+    # Taevas "{color=#00ff00}Thanks ! You guys played very well too {/color}"
+    # Nelou "No way, I lost to Tae once again ! I'm such a golem bro..."
+    # lardon "{color=#00ff00}Losing to Tae is not a bad thing you know, he's cracked.{/color}"
+    # Manten "I guess it's time for lardon's Team to pick now !"
+    # lardon "{color=#00ff00}Yes, we'll pick DT1 !{/color}"
+    # Nagi "Good luck and have fun !"
 
-    Nelou "OH COME ON I FCED AND IT'S NOT ENOUGH ! Haaaa, well played guys, you were just better... But I'll beat you next time !"
-    lardon "{color=#00ff00}GGWP to everyone ! That was great !{/color}"
-    Manten "Yeah, I really enjoyed this little match. Great idea you got there Nagi."
+    # hide nelou normal 
+    # hide nagi normal 
+    # with dissolve
+    # show bg osu
+    # with fadehold 
+    # show nelou normal at left
+    # show nagi normal at right
+    # with dissolve
 
-    "Matchcosts Top 3 : \n
-    1 - Taevas (2.93) \n 
-    2 - Nelyth (2.23) \n
-    3 - lardon (2.22)"
+    # "Results of DT1 :"
+    # "Team Lardon : 2,153,568 - 1,786,436"
+    # "Team Lardon : 3 - 1 : Team Manten"
 
-    show bg black
-    with fadehold
+    # Nelou "What the hell, Taevas is always winning... he's just a crackhead"
+    # Manten "Indeed he is. We have to pick now."
+    # Nagi "Maybe we should try a NM1 ? The skillcap might work since we have Nel"
+    # Manten "Hmmm... Good idea, let's try this. "
+    # lardon "{color=#00ff00}Alright ! Good luck !{/color}"
+
+    # hide nelou normal 
+    # hide nagi normal 
+    # with dissolve
+    # show bg osu
+    # with fadehold 
+    # show nelou normal at left
+    # show nagi normal at right
+    # with dissolve
+
+    # "Results of NM1 : "
+    # "Team Lardon : 2,596,361 - 2,131,727 : Team Manten"
+    # "Team Lardon : 4 - 1 : Team Manten"
+    # "--- END OF THE MATCH ---"
+
+    # Nelou "OH COME ON I FCED AND IT'S NOT ENOUGH ! Haaaa, well played guys, you were just better... But I'll beat you next time !"
+    # lardon "{color=#00ff00}GGWP to everyone ! That was great !{/color}"
+    # Manten "Yeah, I really enjoyed this little match. Great idea you got there Nagi."
+
+    # "Matchcosts Top 3 : \n
+    # 1 - Taevas (2.93) \n 
+    # 2 - Nelyth (2.23) \n
+    # 3 - lardon (2.22)"
+
+    
     hide nagi normal
     hide nelou normal
+    hide NM1_selection
+    hide NM2_selection
+    hide NM3_selection
+    show bg black
+    with fadehold
 
 jump Terli_Call_Day2 
 
@@ -664,7 +718,12 @@ with fadehold
 
 "go to the germans building"
 
-jump map_start 
+call screen map_button
+
+
+    
+
+
 
 
 return

@@ -312,6 +312,9 @@ screen navigation():
 
         textbutton _("Preferences") action ShowMenu("preferences")
 
+        if renpy.get_screen("main_menu"):  
+            textbutton _("Players Cards") action ShowMenu("players_cards")
+       
         if _in_replay:
 
             textbutton _("End Replay") action EndReplay(confirm=True)
